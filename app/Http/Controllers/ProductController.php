@@ -85,5 +85,18 @@ class ProductController extends Controller
     }
     public function addToCart($id) {
         $product = Product::findOrFail($id); 
+        $cart = session()->get("cart", []); 
+        if(isset($cart[$id])) {
+          $cart[$id]["quantity"]++; 
+        } else {
+            $cart[$id] = [
+                "name" => $product->name, 
+                "description" => $product->description, 
+                "price" => $product->price,
+                "picture" => $product->picture 
+            ]; 
+        }
+        session()->put("cart", $cart); 
+        return redirect()->back();
     }
 }

@@ -1,5 +1,5 @@
 <x-layout>
-  <div class="mx-auto flex justify-center mt-10 gap-20">
+  <div class="mx-auto flex justify-center mt-5 gap-20">
   <div class="bg-secondary rounded w-1/3 shadow-nav p-5">
       <h1 class="text-primary text-4xl font-extrabold font-primary pb-4">Contactez-nous</h1>
       <p class="text-primary text-[1.2rem] font-semibold font-sans pb-11">Nous serions ravis de recevoir vos commentaires, commandes et messages!</p>      

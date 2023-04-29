@@ -2317,7 +2317,9 @@ var Cart = function Cart() {
         "class": "text-[1.5rem]",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
           "class": "fa-solid fa-cart-shopping mr-[2px]"
-        }), "Panier"]
+        }), "Panier ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+          children: products.length
+        })]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_2__.Transition.Root, {
       show: open,
@@ -2354,7 +2356,7 @@ var Cart = function Cart() {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Dialog.Panel, {
                   className: "pointer-events-auto w-screen max-w-md",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-                    className: "flex h-full flex-col overflow-y-scroll bg-white shadow-xl",
+                    className: "flex h-full flex-col overflow-y-scroll bg-secondary shadow-xl",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
                       className: "flex-1 overflow-y-auto px-4 py-6 sm:px-6",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
@@ -2366,7 +2368,7 @@ var Cart = function Cart() {
                           className: "ml-3 flex h-7 items-center",
                           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("button", {
                             type: "button",
-                            className: "-m-2 p-2 text-gray-400 hover:text-gray-500",
+                            className: "-m-2 p-2 text-gray-400 hover:text-gray-500 outline-none",
                             onClick: function onClick() {
                               return setOpen(false);
                             },
@@ -2423,7 +2425,7 @@ var Cart = function Cart() {
                                       className: "flex",
                                       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
                                         type: "button",
-                                        className: "font-medium text-indigo-600 hover:text-indigo-500",
+                                        className: "font-medium text-blue-500 hover:text-blue-600",
                                         children: "Remove"
                                       })
                                     })]
@@ -2450,7 +2452,7 @@ var Cart = function Cart() {
                         className: "mt-6",
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
                           href: "#",
-                          className: "flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700",
+                          className: "flex items-center justify-center rounded-md border border-transparent bg-blue-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-600",
                           children: "Checkout"
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -2458,11 +2460,11 @@ var Cart = function Cart() {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
                           children: ["or", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("button", {
                             type: "button",
-                            className: "font-medium text-indigo-600 hover:text-indigo-500",
+                            className: "font-medium text-blue-500 hover:text-blue-600",
                             onClick: function onClick() {
                               return setOpen(false);
                             },
-                            children: ["Continue Shopping", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                            children: ["\xA0Continue Shopping", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
                               "aria-hidden": "true",
                               children: " \u2192"
                             })]

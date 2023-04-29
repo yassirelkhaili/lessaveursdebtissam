@@ -14,10 +14,10 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>lessaveursdebtissam</title>
 </head>
-<body>
+<body class="bg-[#FEE7C9]">
     <header>
             <nav class="flex justify-center gap-20 h-[7rem] bg-[#FFC0C0] shadow-nav p-1">
-                <img src={{asset("storage/images/main-logo.png")}} alt="image" class="h-[6.4rem] w-auto">
+                <a href={{route("home.index")}}><img src={{asset("storage/images/main-logo.png")}} alt="image" class="h-[6.4rem] w-auto"></a>
                 <ul class="flex text-[1.75rem] gap-8 text-primary font-primary font-black leading-[7rem]">
                     <li><a href={{route("home.index")}}>Accueil</a></li>
                     <li><a href={{route("gallery")}}>Galerie</a></li>
