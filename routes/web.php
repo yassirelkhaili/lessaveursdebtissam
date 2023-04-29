@@ -9,11 +9,7 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
-Route::resource('/delices', ProductController::class);
-
-Route::view('/', 'pages.home')->name('home');
-
-Route::view('/delices', 'products.index')->name('delices');
+Route::resource('/', ProductController::class)->names('home');
 
 Route::view('/Apropos', 'pages.about')->name('Apropos');
 
@@ -26,3 +22,5 @@ Route::view('/contact', 'pages.contact')->name('contact');
 Route::post("/contact", [MailController::class, 'handleSubmit'])->name('contact.store'); 
 
 Route::view('/success', 'misc.success')->name('contact.success'); 
+
+Route::get('addToCart/{id}', [ProductController::class, 'addToCart'])->name('addToCart'); 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
-    public function handleSubmit (Request $request) {
+    public function handleSubmit (Request $request) { 
     $userInput = $request->all(); 
     $recaptcha_response = $_POST['g-recaptcha-response'];
     $secret_key = env('GOOGLE_RECAPTCHA_SECRET_KEY_SERVER');
