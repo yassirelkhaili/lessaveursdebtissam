@@ -24,3 +24,4 @@ Route::post("/contact", [MailController::class, 'handleSubmit'])->name('contact.
 Route::view('/success', 'misc.success')->name('contact.success'); 
 
 Route::get('addToCart/{id}', [ProductController::class, 'addToCart'])->name('addToCart'); 
+Route::delete('removeFromCart/{id}', [ProductController::class, 'removeFromCart'])->name('removeFromCart'); 

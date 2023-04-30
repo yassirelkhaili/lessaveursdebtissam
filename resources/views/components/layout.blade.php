@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +34,10 @@
     </main>
     <footer>
     </footer>
+    <script>
+        window.totalprice = {!!session()->get('totalprice')!!}
+        window.cart =  @json(session()->get('cart'))
+    </script>
     <script src={{ mix("js/app.js") }}></script>
 </body>
 </html>

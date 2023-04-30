@@ -79,24 +79,35 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function removeFromCart($id)
     {
-        //
+        $cart = session()->get("cart"); 
+        unset($cart[$id]); 
+        session()->put("cart", $cart); 
+        dd($cart); 
     }
     public function addToCart($id) {
-        $product = Product::findOrFail($id); 
-        $cart = session()->get("cart", []); 
+        $product = Product::findOrFail($id);
+        $cart = session()->get('cart', []);
         if(isset($cart[$id])) {
-          $cart[$id]["quantity"]++; 
-        } else {
+            $cart[$id]['quantity']++;
+        }  else {
             $cart[$id] = [
-                "name" => $product->name, 
+                "id" => $product->id, 
+                "product_name" => $product->name,
                 "description" => $product->description, 
+                "picture" => $product->picture,
                 "price" => $product->price,
-                "picture" => $product->picture 
-            ]; 
+                "quantity" => 1,
+                "stock" => $product->available
+            ];
         }
-        session()->put("cart", $cart); 
-        return redirect()->back();
-    }
+        $totalPrice = 0;
+        foreach ($cart as $item) {
+            $totalPrice += $item["price"] * $item["quantity"];
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        return redirect()->back()->with('success', 'Produit ajouté avec succès!');
+}
 }

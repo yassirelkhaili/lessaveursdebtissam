@@ -2210,8 +2210,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+var products = window.cart;
 var root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(document.getElementById("root"));
-root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_cart__WEBPACK_IMPORTED_MODULE_2__["default"], {}));
+root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_cart__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  products: products
+}));
 
 /***/ }),
 
@@ -2281,26 +2284,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var products = [{
-  id: 1,
-  name: 'Throwback Hip Bag',
-  href: '#',
-  color: 'Salmon',
-  price: '$90.00',
-  quantity: 1,
-  imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-  imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.'
-}, {
-  id: 2,
-  name: 'Medium Stuff Satchel',
-  href: '#',
-  color: 'Blue',
-  price: '$32.00',
-  quantity: 1,
-  imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-  imageAlt: 'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.'
-}];
-var Cart = function Cart() {
+var Cart = function Cart(_ref) {
+  var products = _ref.products;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     open = _useState2[0],
@@ -2314,11 +2299,11 @@ var Cart = function Cart() {
       id: "cartIcon",
       className: "cursor-pointer",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("a", {
-        "class": "text-[1.5rem]",
+        className: "text-[1.5rem]",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
-          "class": "fa-solid fa-cart-shopping mr-[2px]"
+          className: "fa-solid fa-cart-shopping mr-[2px]"
         }), "Panier ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-          children: products.length
+          children: Object.keys(products).length
         })]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_2__.Transition.Root, {
@@ -2388,14 +2373,21 @@ var Cart = function Cart() {
                           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("ul", {
                             role: "list",
                             className: "-my-6 divide-y divide-gray-200",
-                            children: products.map(function (product) {
+                            children: Object.keys(products).map(function (key) {
+                              var _products$key = products[key],
+                                id = _products$key.id,
+                                product_name = _products$key.product_name,
+                                picture = _products$key.picture,
+                                price = _products$key.price,
+                                quantity = _products$key.quantity,
+                                stock = _products$key.stock,
+                                description = _products$key.description;
                               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("li", {
                                 className: "flex py-6",
                                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
                                   className: "h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200",
                                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
-                                    src: product.imageSrc,
-                                    alt: product.imageAlt,
+                                    src: picture,
                                     className: "h-full w-full object-cover object-center"
                                   })
                                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
@@ -2405,33 +2397,32 @@ var Cart = function Cart() {
                                       className: "flex justify-between text-base font-medium text-gray-900",
                                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
                                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
-                                          href: product.href,
-                                          children: product.name
+                                          children: product_name
                                         })
                                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                                         className: "ml-4",
-                                        children: product.price
+                                        children: price
                                       })]
                                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                                       className: "mt-1 text-sm text-gray-500",
-                                      children: product.color
+                                      children: description
                                     })]
                                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
                                     className: "flex flex-1 items-end justify-between text-sm",
                                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
                                       className: "text-gray-500",
-                                      children: ["Qty ", product.quantity]
+                                      children: ["Qty ", quantity]
                                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
                                       className: "flex",
                                       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
                                         type: "button",
-                                        className: "font-medium text-blue-500 hover:text-blue-600",
+                                        className: "font-medium text-blue-700 hover:text-blue-800",
                                         children: "Remove"
                                       })
                                     })]
                                   })]
                                 })]
-                              }, product.id);
+                              }, key);
                             })
                           })
                         })
@@ -2442,9 +2433,7 @@ var Cart = function Cart() {
                         className: "flex justify-between text-base font-medium text-gray-900",
                         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                           children: "Subtotal"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
-                          children: "$262.00"
-                        })]
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {})]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                         className: "mt-0.5 text-sm text-gray-500",
                         children: "Shipping and taxes calculated at checkout."
@@ -2452,7 +2441,7 @@ var Cart = function Cart() {
                         className: "mt-6",
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
                           href: "#",
-                          className: "flex items-center justify-center rounded-md border border-transparent bg-blue-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-600",
+                          className: "flex items-center justify-center rounded-md border border-transparent bg-blue-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-800",
                           children: "Checkout"
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -2460,7 +2449,7 @@ var Cart = function Cart() {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
                           children: ["or", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("button", {
                             type: "button",
-                            className: "font-medium text-blue-500 hover:text-blue-600",
+                            className: "font-medium text-blue-700 hover:text-blue-800",
                             onClick: function onClick() {
                               return setOpen(false);
                             },

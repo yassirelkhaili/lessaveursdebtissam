@@ -9,7 +9,7 @@
         </a>
         <div class="flex items-center justify-between">
             <span class="text-2xl text-gray-900 font-primary font-bold">{{ $product->price }}dh</span>
-            <a href={{route('addToCart', $product->id)}} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Ajouter au panier</a>
+            <a href={{route('addToCart', $product->id)}} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Ajouter au panier</a>
         </div>
     </div>
 </div>
