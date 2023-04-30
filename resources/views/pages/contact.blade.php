@@ -58,7 +58,7 @@
                       <div class="g-recaptcha" data-sitekey={{env('GOOGLE_RECAPTCHA_SECRET_KEY_CLIENT')}}></div>
                   </div>
                   <div class="flex justify-center">
-                  <button class="bg-blue-500 hover:bg-blue-600 text-sm font-bold uppercase text-white font-primary py-3 px-5 rounded transition duration-300" id="btn" type="submit">Envoyer ce Message</button>
+                  <button class="bg-blue-700 hover:bg-blue-800 text-sm font-bold uppercase text-white font-primary py-3 px-5 rounded transition duration-300" id="btn" type="submit">Envoyer ce Message</button>
                 </div>
             </form>
           </div>

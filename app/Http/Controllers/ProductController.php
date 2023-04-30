@@ -79,19 +79,35 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function removeFromCart($id)
     {
         $cart = session()->get("cart"); 
         unset($cart[$id]); 
-        session()->put("cart", $cart); 
-        dd($cart); 
+        $totalPrice = 0;
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        $response = [
+            "cart" => session("cart"),
+            "totalPrice" => $totalPrice
+        ];
+        return Response()->json($response, 200);
     }
+
     public function addToCart($id) {
         $product = Product::findOrFail($id);
         $cart = session()->get('cart', []);
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        }  else {
+        if(!isset($cart[$id])){
             $cart[$id] = [
                 "id" => $product->id, 
                 "product_name" => $product->name,
@@ -101,10 +117,14 @@ class ProductController extends Controller
                 "quantity" => 1,
                 "stock" => $product->available
             ];
-        }
+        } else if ($cart[$id]["quantity"] < $product->available) {
+            $cart[$id]["quantity"]++; 
+        } 
         $totalPrice = 0;
-        foreach ($cart as $item) {
-            $totalPrice += $item["price"] * $item["quantity"];
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
         }
         session()->put("cart", $cart);
         session()->put("totalprice", $totalPrice); 

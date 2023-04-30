@@ -2,16 +2,23 @@ import React from 'react'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import axios from 'axios'
 
-
-const Cart = ({products}) => {
+const Cart = ({products, totalprice}) => {
     const [open, setOpen] = useState(false)
+    const [items, setproducts] = useState(products)
+    const [price, setprice] = useState(totalprice)
     const handleClick = () => {
         setOpen(!open)
+    } 
+    const handleDelete = (id) => {
+      axios.delete("/removeFromCart/" + id)
+  .then(response => {setproducts(response.data.cart); setprice(response.data.totalPrice)})
+  .catch(error => console.error(error))
     }
-  return (
+    return (
     <div>
-    <li onClick={handleClick} id="cartIcon" className="cursor-pointer"><a className="text-[1.5rem]" ><i className="fa-solid fa-cart-shopping mr-[2px]"></i>Panier <span>{Object.keys(products).length}</span></a></li>
+    <li onClick={handleClick} id="cartIcon" className="cursor-pointer"><a className="text-[1.5rem]" ><i className="fa-solid fa-cart-shopping mr-[2px]"></i>Panier <span>{Object.keys(items).length}</span></a></li>
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <Transition.Child
@@ -42,7 +49,7 @@ const Cart = ({products}) => {
                   <div className="flex h-full flex-col overflow-y-scroll bg-secondary shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">Shopping cart</Dialog.Title>
+                        <Dialog.Title className="text-lg font-medium text-gray-900">Commande</Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
@@ -58,13 +65,13 @@ const Cart = ({products}) => {
                       <div className="mt-8">
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {Object.keys(products).map((key) => {
-                              const {id, product_name, picture, price, quantity, stock, description} = products[key]
+                          {Object.keys(items).map((key) => {
+                              const {id, product_name, picture, price, quantity, stock, description} = items[key]
                               return (
                                 <li key={key} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={picture}
+                                    src={"storage/" + picture}
                                     className="h-full w-full object-cover object-center"
                                   />
                                 </div>
@@ -79,11 +86,12 @@ const Cart = ({products}) => {
                                     <p className="mt-1 text-sm text-gray-500">{description}</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty {quantity}</p>
+                                    <span className="text-gray-500">Qty {quantity}</span><span className="text-gray-500">Stock {stock}</span>
                                     <div className="flex">
                                       <button
                                         type="button"
                                         className="font-medium text-blue-700 hover:text-blue-800"
+                                        onClick={() => {handleDelete(id)}}
                                       >
                                         Remove
                                       </button>
@@ -98,17 +106,19 @@ const Cart = ({products}) => {
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                      <div className="flex justify-between text-base font-medium text-gray-900">
-                        <p>Subtotal</p>
-                        <p></p>
+                      <div className="flex justify-between text-base font-medium text-gray-900 mb-3">
+                        <p>Total:</p>
+                        <p>{price}dh</p>
                       </div>
-                      <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                      <div className="mt-6">
+                      <p className="mt-0.5 text-sm text-[#079C07] font-[500]"><i className="fa-solid fa-truck-fast"></i> Livraison gratuite</p>
+                      <p className="mt-0.5 text-sm text-[#079C07] font-[500]"><i className="fa-solid fa-money-bill"></i> Payer en cash à la livraison</p>
+                      <p className="mt-0.5 text-sm text-[#079C07] font-[500]"><i className="fa-solid fa-globe"></i> Livraison tout autour de Marrakech</p>
+                      <div className="mt-3">
                         <a
-                          href="#"
+                        href='/checkout'
                           className="flex items-center justify-center rounded-md border border-transparent bg-blue-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-800"
                         >
-                          Checkout
+                          Finaliser ma commande
                         </a>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
@@ -119,7 +129,7 @@ const Cart = ({products}) => {
                             className="font-medium text-blue-700 hover:text-blue-800"
                             onClick={() => setOpen(false)}
                           >
-                            &nbsp;Continue Shopping
+                            &nbsp;Continuer vos achats
                             <span aria-hidden="true"> &rarr;</span>
                           </button>
                         </p>

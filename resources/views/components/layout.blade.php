@@ -35,7 +35,7 @@
     <footer>
     </footer>
     <script>
-        window.totalprice = {!!session()->get('totalprice')!!}
+        window.totalprice = {!! session()->get("totalprice") !!}
         window.cart =  @json(session()->get('cart'))
     </script>
     <script src={{ mix("js/app.js") }}></script>
