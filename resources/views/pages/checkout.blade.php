@@ -1,6 +1,56 @@
 <x-layout>
-    <div class="flex justify-center">
-    <div class="bg-secondary p-5 rounded w-[34rem] shadow-nav mt-5">
+    <div class="flex justify-center mt-5 gap-20">
+        <div class="bg-secondary rounded w-1/3 shadow-nav p-5">
+            <h1 class="text-primary text-4xl font-extrabold font-primary pb-4">Commande</h1>
+            <ul role="list" className="-my-6 divide-y divide-gray-200">
+            @foreach (session()->get("cart") as $product) 
+            <li class="flex py-6">
+                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                  <img
+                    class="h-full w-full object-cover object-center"
+                    src={{ "storage/" . $product["picture"] }}
+                  />
+                </div>
+                <div class="ml-4 flex flex-1 flex-col">
+                  <div>
+                    <div class="flex justify-between text-base font-medium text-gray-900">
+                      <h3>
+                        <a>{{$product["product_name"]}}</a>
+                      </h3>
+                      <p class="ml-4">{{$product["price"]}}</p>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">{{$product["description"]}}</p>
+                  </div>
+                  <div class="flex flex-1 items-end justify-between text-sm">
+                    <span class="text-gray-500">Qty {{$product["quantity"]}}</span><span class="text-gray-500">Stock {{$product["stock"]}}</span>
+                    <div class="flex">
+                        <form action="{{ route('removeFromCartCheckout', $product["id"]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button
+                        type="submit"
+                        class="font-medium text-blue-700 hover:text-blue-800"
+                      >
+                      Remove
+                      </button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            @endforeach
+            </ul>
+            <div class="border-t border-gray-200 px-4 py-6">
+                <div class="flex justify-between text-base font-medium text-gray-900 mb-3">
+                  <p>Total:</p>
+                  <p>{{session()->get("totalprice")}}dh</p>
+                </div>
+                <p class="mt-0.5 text-sm text-[#079C07] font-[500]"><i class="fa-solid fa-truck-fast"></i> Livraison gratuite</p>
+                <p class="mt-0.5 text-sm text-[#079C07] font-[500]"><i class="fa-solid fa-money-bill"></i> Payer en cash à la livraison</p>
+                <p class="mt-0.5 text-sm text-[#079C07] font-[500]"><i class="fa-solid fa-globe"></i> Livraison tout autour de Marrakech</p>
+    </div>
+</div>
+    <div class="bg-secondary p-5 rounded w-[34rem] shadow-nav">
         <form action={{route("contact.store")}} method="POST" class="w-full max-w-lg">
             @csrf
             <div class="flex flex-wrap -mx-3 mb-6">

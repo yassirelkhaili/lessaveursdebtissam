@@ -2309,13 +2309,24 @@ var Cart = function Cart(_ref) {
   var handleClick = function handleClick() {
     setOpen(!open);
   };
+  (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest';
+  (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.xsrfCookieName) = 'XSRF-TOKEN';
+  (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.xsrfHeaderName) = 'X-XSRF-TOKEN';
   var handleDelete = function handleDelete(id) {
-    axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/removeFromCart/" + id).then(function (response) {
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/removeFromCart/" + id, {
+      headers: {
+        'X-CSRF-TOKEN': token
+      }
+    }).then(function (response) {
       setproducts(response.data.cart);
       setprice(response.data.totalPrice);
     })["catch"](function (error) {
       return console.error(error);
     });
+    if (window.location.href === "http://127.0.0.1:8000/checkout") {
+      window.location.reload();
+    }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
@@ -2495,7 +2506,7 @@ var Cart = function Cart(_ref) {
                             type: "button",
                             className: "font-medium text-blue-700 hover:text-blue-800",
                             onClick: function onClick() {
-                              return setOpen(false);
+                              window.location.href === "http://127.0.0.1:8000/" ? setOpen(false) : window.location.replace("http://127.0.0.1:8000/");
                             },
                             children: ["\xA0Continuer vos achats", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
                               "aria-hidden": "true",

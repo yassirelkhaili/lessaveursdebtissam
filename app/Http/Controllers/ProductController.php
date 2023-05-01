@@ -85,6 +85,20 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function removeFromCartCheckout($id) {
+        $cart = session()->get("cart"); 
+        unset($cart[$id]); 
+        $totalPrice = 0;
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        return  redirect()->back();
+    }
+    
     public function removeFromCart($id)
     {
         $cart = session()->get("cart"); 
@@ -100,8 +114,8 @@ class ProductController extends Controller
         $response = [
             "cart" => session("cart"),
             "totalPrice" => $totalPrice
-        ];
-        return Response()->json($response, 200);
+        ]; 
+        return  Response()->json($response, 200);  
     }
 
     public function addToCart($id) {

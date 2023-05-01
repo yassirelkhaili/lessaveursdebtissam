@@ -11,10 +11,21 @@ const Cart = ({products, totalprice}) => {
     const handleClick = () => {
         setOpen(!open)
     } 
+    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+    axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
     const handleDelete = (id) => {
-      axios.delete("/removeFromCart/" + id)
+      const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      axios.delete("/removeFromCart/" + id, {
+        headers: {
+          'X-CSRF-TOKEN': token
+        }
+      })
   .then(response => {setproducts(response.data.cart); setprice(response.data.totalPrice)})
   .catch(error => console.error(error))
+  if (window.location.href === "http://127.0.0.1:8000/checkout") {
+    window.location.reload()
+  }
     }
     return (
     <div>
@@ -127,7 +138,9 @@ const Cart = ({products, totalprice}) => {
                           <button
                             type="button"
                             className="font-medium text-blue-700 hover:text-blue-800"
-                            onClick={() => setOpen(false)}
+                            onClick={() => {
+                              window.location.href === "http://127.0.0.1:8000/" ? setOpen(false) : window.location.replace("http://127.0.0.1:8000/");
+                            }}
                           >
                             &nbsp;Continuer vos achats
                             <span aria-hidden="true"> &rarr;</span>

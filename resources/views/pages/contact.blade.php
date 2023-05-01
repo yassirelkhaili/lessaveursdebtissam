@@ -16,7 +16,7 @@
           <span>Example Address</span>
       </div>
   </div>
-  <div class="bg-secondary p-5 rounded w-1/3 shadow-nav">
+  <div class="bg-secondary p-5 rounded w-[34rem] shadow-nav">
       <form action={{route("contact.store")}} method="POST" class="w-full max-w-lg" onsubmit="showSpinner()">
           @csrf
               <div class="flex flex-wrap -mx-3 mb-6">
