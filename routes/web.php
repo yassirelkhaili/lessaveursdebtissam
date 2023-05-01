@@ -31,4 +31,5 @@ Route::delete('removeFromCartCheckout/{id}', [ProductController::class, 'removeF
 
 Route::view("checkout", "pages.checkout"); 
 
+Route::view("order-success", 'misc.success-order')->name("order.success"); 
 

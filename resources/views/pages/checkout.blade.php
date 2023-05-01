@@ -3,6 +3,7 @@
         <div class="bg-secondary rounded w-1/3 shadow-nav p-5">
             <h1 class="text-primary text-4xl font-extrabold font-primary pb-4">Commande</h1>
             <ul role="list" className="-my-6 divide-y divide-gray-200">
+              @if(!empty(session()->get("cart")))
             @foreach (session()->get("cart") as $product) 
             <li class="flex py-6">
                 <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -39,6 +40,7 @@
                 </div>
               </li>
             @endforeach
+            @endif
             </ul>
             <div class="border-t border-gray-200 px-4 py-6">
                 <div class="flex justify-between text-base font-medium text-gray-900 mb-3">
@@ -51,20 +53,20 @@
     </div>
 </div>
     <div class="bg-secondary p-5 rounded w-[34rem] shadow-nav">
-        <form action={{route("contact.store")}} method="POST" class="w-full max-w-lg">
+        <form action={{route("home.store")}} method="POST" class="w-full max-w-lg">
             @csrf
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="fname">
                     Prenom
                   </label>
-                  <input pattern='.{3,}' oninvalid="setCustomValidity('Le Prenom doit contenir au moins 3 Caractères');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="fname" name="fname" type="text" placeholder="Prenom" required>
+                  <input pattern='^.{3,255}$' oninvalid="setCustomValidity('Le Prenom doit contenir au moins 3 Caractères');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="fname" name="fname" type="text" placeholder="Prenom" required>
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="lname">
                     Nom
                   </label>
-                  <input pattern='.{3,}' oninvalid="setCustomValidity('Le Nom doit contenir au moins 3 Caractères');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="lname" name="lname" type="text" placeholder="Nom" required>
+                  <input pattern='^.{3,255}$' oninvalid="setCustomValidity('Le Nom doit contenir au moins 3 Caractères');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="lname" name="lname" type="text" placeholder="Nom" required>
                 </div>
               </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -72,7 +74,15 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="email">
                       Email
                     </label>
-                    <input pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" oninvalid="setCustomValidity('Veuillez entrer un Email Valide');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  id="email" name="email" type="text" placeholder="Email" required>
+                    <input pattern="^(?=.{1,255}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" oninvalid="setCustomValidity('Veuillez entrer un Email valide');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  id="email" name="email" type="text" placeholder="Email" required>
+                  </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                  <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+                      Numero de telephone
+                    </label>
+                    <input pattern="^(?=.{1,255}$)\+?[0-9\s\-()]{8,}$" oninvalid="setCustomValidity('Veuillez entrer un numero de telephone valide');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  id="phone" name="phone" type="text" placeholder="Numero de telephone" required>
                   </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -80,7 +90,7 @@
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="address">
                         Adresse domicile
                       </label>
-                      <input pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" oninvalid="setCustomValidity('Veuillez entrer un Email Valide');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  id="email" name="email" type="text" placeholder="Adresse" required>
+                      <input pattern="^(?=.{1,255}$)[a-zA-Z0-9\s.,°]{8,}$" oninvalid="setCustomValidity('L\'adresse doit comporter au moins 8 caractères et aucun caractère spécial');" onInput="setCustomValidity('');" class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  id="address" name="address" type="text" placeholder="Adresse" required>
                     </div>
                   </div>
                 <div class="flex flex-wrap -mx-3 mb-6">

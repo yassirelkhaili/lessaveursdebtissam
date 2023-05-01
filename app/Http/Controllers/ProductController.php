@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product; 
+use App\Models\Order;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -36,7 +38,60 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $recaptcha_response = $_POST['g-recaptcha-response'];
+        $secret_key = env('GOOGLE_RECAPTCHA_SECRET_KEY_SERVER');
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret_key&response=$recaptcha_response");
+        $response = json_decode($response); 
+        if($response->success) {
+            $orders = Order::all();
+            $randid = mt_rand(999999, 99999999999999); 
+            foreach ($orders as $order) {
+                while ($order->order_id == $randid) {
+                    $randid = mt_rand(999999, 99999999999999);
+                }
+            }
+            $cart = session()->get("cart"); 
+            $totalprice = session()->get("totalprice"); 
+            $finalcart = []; 
+            $index = 0; 
+            foreach ($cart as $cart_item) {
+            $finalcart[$index] = [
+                "Id" => "Id: " . $cart_item["id"],
+                "Produit" => " Produit: " . $cart_item["product_name"],
+                "Prix" => " Prix: " . $cart_item["price"] . " dh",  
+                "Qty" => " Quantité: " . $cart_item["quantity"]
+            ]; 
+            $index++; 
+            }
+            $finalcart[$index] = [
+                "Total" => " Total: " . $totalprice . " dh"
+            ]; 
+            $stringArrays = array_map(function($array) {
+                return implode(",", $array); 
+            }, $finalcart); 
+            $cartString = implode("*", $stringArrays); 
+            try {
+            $order = new Order();
+            $order->nom_client = $request->input('lname');
+            $order->prenom_client = $request->input('fname');
+            $order->message = $request->input('message');
+            $order->adresse_client = $request->input('address');
+            $order->email_client = $request->input('email');
+            $order->contact_client = $request->input('phone');
+            $order->order = $cartString;
+            $order->order_id = $randid;
+            $order->save();
+            } catch (\Exception) {
+            session()->flash('error', 'Il y a eu une erreur lors de la soumission de votre commande, veuillez nous contacter via notre WhatsApp, numéro de téléphone ou formulaire de contact');
+            return back(); 
+            }
+            Session::forget("totalprice");
+            Session::forget("cart");
+            return redirect()->route("order.success");
+        } else {
+            session()->flash('error', 'Veuillez remplir le captcha et réessayer');
+            return back(); 
+        }
     }
 
     /**
@@ -81,7 +136,7 @@ class ProductController extends Controller
      */
     /**
      * Remove the specified resource from storage.
-     *
+     * @param  \Illuminate\Http\Request 
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -98,7 +153,12 @@ class ProductController extends Controller
         session()->put("totalprice", $totalPrice); 
         return  redirect()->back();
     }
-    
+/**
+     * Remove the specified resource from storage.
+     * @param  \Illuminate\Http\Request 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function removeFromCart($id)
     {
         $cart = session()->get("cart"); 

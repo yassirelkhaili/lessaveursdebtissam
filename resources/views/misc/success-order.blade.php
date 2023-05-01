@@ -12,8 +12,8 @@
 </head>
 <body>
 <div class="flex justify-center flex-col gap-5 items-center bg-secondary h-screen w-screen">
-<h1 class="text-primary text-3xl font-bold font-primary">Merci pour votre message!</h1>
-<p class="text-primary text-xl font-bold font-sans pb-2">Nous vous répondrons dans les plus brefs délais</p>
+<h1 class="text-primary text-3xl font-bold font-primary">Merci pour choisir Les Saveurs de Btissam!</h1>
+<p class="text-primary text-xl font-bold font-sans pb-2">Nous vous appellerons sous peu pour confirmer votre commande et discuter les détails de livraison</p>
 <a href={{ route('home.index') }} class="bg-blue-500 hover:bg-blue-600 text-sm font-bold uppercase text-white font-primary py-3 px-5 rounded transition duration-300">Retour à la page d'accueil</a>
 </div>
 </body>

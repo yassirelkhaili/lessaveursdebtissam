@@ -17,7 +17,7 @@
       </div>
   </div>
   <div class="bg-secondary p-5 rounded w-[34rem] shadow-nav">
-      <form action={{route("contact.store")}} method="POST" class="w-full max-w-lg" onsubmit="showSpinner()">
+      <form action={{route("contact.store")}} method="POST" class="w-full max-w-lg">
           @csrf
               <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
