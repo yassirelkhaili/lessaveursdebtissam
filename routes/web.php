@@ -33,3 +33,12 @@ Route::view("checkout", "pages.checkout");
 
 Route::view("order-success", 'misc.success-order')->name("order.success"); 
 
+Route::patch("/increasequantity/{id}", [ProductController::class, "increaseQuantity"]); 
+
+Route::patch("/decreasequantity/{id}", [ProductController::class, "decreaseQuantity"]); 
+
+Route::patch("/increasequantitycheckout/{id}", [ProductController::class, "increaseQuantityCheckout"])->name("increaseQuantityCheckout");
+ 
+Route::patch("/decreasequantitycheckout/{id}", [ProductController::class, "decreaseQuantityCheckout"])->name("decreaseQuantityCheckout"); ; 
+
+

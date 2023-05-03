@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href={{asset("css/app.css")}}>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="app_url" content={{env("APP_URL")}}>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
@@ -105,7 +106,7 @@
       </footer>
     <script>
         window.totalprice = {!! session()->get("totalprice") !!}
-        window.cart =  @json(session()->get('cart'))
+        window.cart =  @json(session()->get('cart')); 
     </script>
     <script src={{ mix("js/app.js") }}></script>
 </body>

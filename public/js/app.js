@@ -2312,8 +2312,9 @@ var Cart = function Cart(_ref) {
   (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest';
   (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.xsrfCookieName) = 'XSRF-TOKEN';
   (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.xsrfHeaderName) = 'X-XSRF-TOKEN';
+  var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  var url = document.querySelector('meta[name="app_url"]').getAttribute('content');
   var handleDelete = function handleDelete(id) {
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/removeFromCart/" + id, {
       headers: {
         'X-CSRF-TOKEN': token
@@ -2324,8 +2325,39 @@ var Cart = function Cart(_ref) {
     })["catch"](function (error) {
       return console.error(error);
     });
-    if (window.location.href === "http://127.0.0.1:8000/checkout") {
+    if (window.location.href === url + "/checkout") {
       window.location.reload();
+    }
+  };
+  var handleEdit = function handleEdit(id, e) {
+    if (e.target.textContent === "-") {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().patch("/decreasequantity/" + id, {
+        headers: {
+          'X-CSRF-TOKEN': token
+        }
+      }).then(function (response) {
+        setproducts(response.data.cart);
+        setprice(response.data.totalPrice);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+      if (window.location.href === url + "/checkout") {
+        window.location.reload();
+      }
+    } else {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().patch("/increasequantity/" + id, {
+        headers: {
+          'X-CSRF-TOKEN': token
+        }
+      }).then(function (response) {
+        setproducts(response.data.cart);
+        setprice(response.data.totalPrice);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+      if (window.location.href === url + "/checkout") {
+        window.location.reload();
+      }
     }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
@@ -2444,9 +2476,26 @@ var Cart = function Cart(_ref) {
                                     })]
                                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                                     className: "flex flex-1 items-end justify-between text-sm",
-                                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-                                      className: "text-gray-500",
-                                      children: ["Qty ", quantity]
+                                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                                      className: "flex gap-1 text-base font-medium text-blue-700",
+                                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                                        id: "plus",
+                                        className: "font-bold cursor-pointer",
+                                        onClick: function onClick(e) {
+                                          handleEdit(id, e);
+                                        },
+                                        children: "+"
+                                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
+                                        className: "text-gray-500",
+                                        children: ["Quantit\xE9: ", quantity]
+                                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                                        id: "minus",
+                                        className: "font-bold cursor-pointer",
+                                        onClick: function onClick(e) {
+                                          handleEdit(id, e);
+                                        },
+                                        children: "-"
+                                      })]
                                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
                                       className: "text-gray-500",
                                       children: ["Stock ", stock]
@@ -2458,7 +2507,7 @@ var Cart = function Cart(_ref) {
                                         onClick: function onClick() {
                                           handleDelete(id);
                                         },
-                                        children: "Remove"
+                                        children: "Retirer"
                                       })
                                     })]
                                   })]

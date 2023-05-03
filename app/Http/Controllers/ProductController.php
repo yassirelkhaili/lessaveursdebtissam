@@ -17,6 +17,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+        session()->get("cart", []); 
         return view('products.index')->with("products", $products);
     }
 
@@ -81,8 +82,8 @@ class ProductController extends Controller
             $order->order = $cartString;
             $order->order_id = $randid;
             $order->save();
-            } catch (\Exception) {
-            session()->flash('error', 'Il y a eu une erreur lors de la soumission de votre commande, veuillez nous contacter via notre WhatsApp, numéro de téléphone ou formulaire de contact');
+            } catch (\Exception $e) {
+            session()->flash('error', 'Il y a eu une erreur lors de la soumission de votre commande, veuillez nous contacter via notre WhatsApp, numéro de téléphone ou formulaire de contact' . " Code: " . $e->getMessage());
             return back(); 
             }
             Session::forget("totalprice");
@@ -123,11 +124,55 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function increaseQuantity(Request $request, $id)
     {
-        //
+        $cart = session()->get("cart"); 
+        $product = Product::findOrFail($id);
+        if ($cart[$id]["quantity"] < $product->available) {
+            $cart[$id]["quantity"]++; 
+        }
+        $totalPrice = 0;
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        $response = [
+            "cart" => session("cart"),
+            "totalPrice" => $totalPrice
+        ]; 
+        return  Response()->json($response, 200); 
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function decreaseQuantity(Request $request, $id)
+    {
+        $cart = session()->get("cart"); 
+        if ($cart[$id]["quantity"] > 1) {
+            $cart[$id]["quantity"]--; 
+        }
+        $totalPrice = 0;
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        $response = [
+            "cart" => session("cart"),
+            "totalPrice" => $totalPrice
+        ]; 
+        return  Response()->json($response, 200); 
+    }
     /**
      * Remove the specified resource from storage.
      *

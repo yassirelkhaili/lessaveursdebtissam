@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
 
-const Cart = ({products, totalprice}) => {
+const Cart = ({products, totalprice}) => { 
     const [open, setOpen] = useState(false)
     const [items, setproducts] = useState(products)
     const [price, setprice] = useState(totalprice)
@@ -14,8 +14,9 @@ const Cart = ({products, totalprice}) => {
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
     axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const url = document.querySelector('meta[name="app_url"]').getAttribute('content');
     const handleDelete = (id) => {
-      const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
       axios.delete("/removeFromCart/" + id, {
         headers: {
           'X-CSRF-TOKEN': token
@@ -23,9 +24,34 @@ const Cart = ({products, totalprice}) => {
       })
   .then(response => {setproducts(response.data.cart); setprice(response.data.totalPrice)})
   .catch(error => console.error(error))
-  if (window.location.href === "http://127.0.0.1:8000/checkout") {
+  if (window.location.href === url + "/checkout") {
     window.location.reload()
   }
+    }
+    const handleEdit = (id, e) => {
+      if (e.target.textContent === "-") {
+        axios.patch("/decreasequantity/" + id, {
+          headers: {
+            'X-CSRF-TOKEN': token
+          }
+        })
+    .then(response => {setproducts(response.data.cart); setprice(response.data.totalPrice)})
+    .catch(error => console.error(error))
+    if (window.location.href === url + "/checkout") {
+    window.location.reload()
+  }
+      } else {
+        axios.patch("/increasequantity/" + id, {
+          headers: {
+            'X-CSRF-TOKEN': token
+          }
+        })
+    .then(response => {setproducts(response.data.cart); setprice(response.data.totalPrice)})
+    .catch(error => console.error(error))
+    if (window.location.href === url + "/checkout") {
+    window.location.reload()
+  }
+      }
     }
     return (
     <div>
@@ -97,14 +123,17 @@ const Cart = ({products, totalprice}) => {
                                     <p className="mt-1 text-sm text-gray-500">{description}</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <span className="text-gray-500">Qty {quantity}</span><span className="text-gray-500">Stock {stock}</span>
+                                  <div className='flex gap-1 text-base font-medium text-blue-700'>
+                                  <div id="plus" className='font-bold cursor-pointer' onClick={(e) => {handleEdit(id, e)}}>+</div><span className="text-gray-500">Quantité: {quantity}</span><div id="minus" className='font-bold cursor-pointer' onClick={(e) => {handleEdit(id, e)}}>-</div>
+                                  </div>
+                                  <span className="text-gray-500">Stock {stock}</span>
                                     <div className="flex">
                                       <button
                                         type="button"
                                         className="font-medium text-blue-700 hover:text-blue-800"
                                         onClick={() => {handleDelete(id)}}
                                       >
-                                        Remove
+                                        Retirer
                                       </button>
                                     </div>
                                   </div>
