@@ -105,18 +105,52 @@ class ProductController extends Controller
     {
         //
     }
-
+ /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function decreaseQuantityCheckout($id)
+    {
+        $cart = session()->get("cart"); 
+        if ($cart[$id]["quantity"] > 1) {
+            $cart[$id]["quantity"]--; 
+        }
+        $totalPrice = 0;
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        return  redirect()->back();
+    }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function increaseQuantityCheckout($id)
     {
-        //
+        $cart = session()->get("cart"); 
+        $product = Product::findOrFail($id);
+        if ($cart[$id]["quantity"] < $product->available) {
+            $cart[$id]["quantity"]++; 
+        }
+        $totalPrice = 0;
+        if(!empty($cart)) {
+            foreach ($cart as $item) {
+                $totalPrice += $item["price"] * $item["quantity"];
+            }
+        }
+        session()->put("cart", $cart);
+        session()->put("totalprice", $totalPrice); 
+        return  redirect()->back();
     }
-
+    
     /**
      * Update the specified resource in storage.
      *

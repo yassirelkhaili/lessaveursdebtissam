@@ -23,7 +23,34 @@
                     <p class="mt-1 text-sm text-gray-500">{{$product["description"]}}</p>
                   </div>
                   <div class="flex flex-1 items-end justify-between text-sm">
-                    <span class="text-gray-500">Qty {{$product["quantity"]}}</span><span class="text-gray-500">Stock {{$product["stock"]}}</span>
+                    <div class='flex gap-1 text-base font-medium text-blue-700'>
+                      <div id="plus" class='cursor-pointer'>
+                        <form action="{{ route('increaseQuantityCheckout', $product["id"]) }}" method="POST">
+                          @csrf
+                          @method('PATCH')
+                          <button
+                      type="submit"
+                      class="font-bold"
+                    >
+                    +
+                    </button>
+                      </form>
+                      </div>
+                      <span class="text-gray-500">Quantité: {{$product["quantity"]}}</span>
+                      <div id="minus" class='cursor-pointer'>
+                        <form action="{{ route('decreaseQuantityCheckout', $product["id"]) }}" method="POST">
+                          @csrf
+                          @method('PATCH')
+                          <button
+                      type="submit"
+                      class="font-bold"
+                    >
+                    -
+                    </button>
+                      </form>
+                      </div>
+                      </div>
+                    <span class="text-gray-500">Stock {{$product["stock"]}}</span>
                     <div class="flex">
                         <form action="{{ route('removeFromCartCheckout', $product["id"]) }}" method="POST">
                             @csrf
@@ -32,7 +59,7 @@
                         type="submit"
                         class="font-medium text-blue-700 hover:text-blue-800"
                       >
-                      Remove
+                      Retirer
                       </button>
                         </form>
                     </div>
